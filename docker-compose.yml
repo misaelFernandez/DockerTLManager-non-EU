@@ -14,7 +14,7 @@ networks:
           gateway: 192.168.10.1
 
 services:
-  #msql 8.0.33
+  #mysql 8.0.33
   mysql:
     container_name: mysql
     restart: unless-stopped

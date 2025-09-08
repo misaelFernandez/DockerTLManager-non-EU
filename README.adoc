@@ -4,6 +4,12 @@
 
 Este proyecto permite levantar TL Manager non-EU en su versión 6.0 https://ec.europa.eu/digital-building-blocks/sites/spaces/TLSO/pages/75665517/Trusted+List+Manager+non-EU[TL Manager non-EU] usando docker en Fedora, sin embargo, se puede adaptar a cualquier sistema operativo.
 
+Conforme el manual de TL Manager non-EU en su versión 6.0, se utiliza lo siguiente:
+
+*Servidor de aplicación:* Tomcat 9.0.73
+*Máquina virtual:* Amazon Corretto 1.8.0_462.b08-1
+*Base de Datos:* MySql 8.0.33
+
 == Prerequisitos
 
 === Docker Engine
@@ -46,9 +52,9 @@ $ chmod +x iniciarTLManager.sh
 $ ./iniciarTLManager.sh
 ----
 
-_Este proceso puede tardar un poco, debido que descarga el comprimido del TL Manager non-EU en su versión 6.0 y luego ubica los archivos en su respectivo lugar.
+_Este proceso puede tardar un poco, debido que descarga el comprimido del TL Manager non-EU en su versión 6.0 y luego ubica los archivos en su respectivo lugar._ 
 
-En caso de encontrarse previamente configurado, levanta y construye el docker-compose._
+_En caso de encontrarse previamente configurado, levanta y construye el docker-compose._
 
 === Acceder a TL Manager
 
