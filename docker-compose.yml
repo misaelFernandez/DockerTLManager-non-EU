@@ -1,0 +1,59 @@
+x-env-variables: &env-variables
+  MYSQL_USER: tsl_user
+  MYSQL_PASSWORD: changeme
+  MYSQL_DATABASE: tsl-noneu
+  MYSQL_ROOT_PASSWORD: changeme
+
+networks:
+  hfnet:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.10.0/24
+          gateway: 192.168.10.1
+
+services:
+  #msql 8.0.33
+  mysql:
+    container_name: mysql
+    restart: unless-stopped
+    environment:
+      <<: *env-variables
+    command:
+      - --character-set-server=utf8
+      - --collation-server=utf8_general_ci
+    networks:
+      hfnet:
+        ipv4_address: 192.168.10.10
+    ports:  
+      - "3306:3306"
+    build:
+      context: ./mysql/
+      dockerfile: Dockerfile
+    volumes:
+      - mysql:/var/lib/mysql
+
+  #Tomcat 9.0.73
+  tomcat:
+    container_name: tomcat
+    networks:
+      hfnet:
+        ipv4_address: 192.168.10.20
+    ports:
+      - "8080:8080"
+    build: 
+      args:
+        <<: *env-variables
+        IP_PRIVADA_TOMCAT: 192.168.10.20
+        IP_PRIVADA_MYSQL: 192.168.10.10
+      context: ./tomcat/
+      dockerfile: Dockerfile
+    volumes:
+      - tomcat:/usr/local/tomcat
+    depends_on:
+      - mysql
+
+volumes:
+  mysql:
+  tomcat:

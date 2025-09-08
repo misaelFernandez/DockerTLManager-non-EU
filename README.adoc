@@ -1,0 +1,154 @@
+= TL Manager non-EU 6.0
+
+== Introducción
+
+Este proyecto permite levantar TL Manager non-EU en su versión 6.0 https://ec.europa.eu/digital-building-blocks/sites/spaces/TLSO/pages/75665517/Trusted+List+Manager+non-EU[TL Manager non-EU] usando docker en Fedora, sin embargo, se puede adaptar a cualquier sistema operativo.
+
+== Prerequisitos
+
+=== Docker Engine
+
+Instalación de https://docs.docker.com/engine/install/#server[Docker Engine].
+
+[source, bash]
+----
+$ sudo dnf -y install dnf-plugins-core
+$ sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+$ sudo dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+----
+
+
+=== Docker Compose
+
+Instalación y configuración de https://github.com/docker/compose/releases[Docker Compose].
+
+[source,bash]
+----
+$ sudo groupadd docker
+$ sudo usermod -aG docker ${USER}
+$ sudo curl -L "https://github.com/docker/compose/releases/download/v2.31.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+$ sudo chmod +x /usr/local/bin/docker-compose
+$ sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+$ docker-compose --version
+----
+
+== Levantar TL Manager
+
+=== Iniciar con la configuración
+
+_Previo a realizar estos pasos, se debe revisar el archivo "docker-compose.yml" y definir las variables globales_
+
+Ejecutar el siguiente script desde consola, desde la ruta del proyecto:
+
+[source, bash]
+----
+$ chmod +x iniciarTLManager.sh
+$ ./iniciarTLManager.sh
+----
+
+_Este proceso puede tardar un poco, debido que descarga el comprimido del TL Manager non-EU en su versión 6.0 y luego ubica los archivos en su respectivo lugar.
+
+En caso de encontrarse previamente configurado, levanta y construye el docker-compose._
+
+=== Acceder a TL Manager
+
+http://localhost:8080/tl-manager-non-eu <-- http://localhost:8080/tl-manager-non-eu[TL Manager local]
+
+*Usuario:* test
+*Contraseña:* password
+
+=== Restaurar la base de datos para importar DRAFT (en caso de ser necesario)
+[source, bash]
+----
+$ docker ps  # para ver el nombre o ID del contenedor
+$ docker exec -it <CONTAINER ID> mysql -u tsl_user -p
+$ use tsl-noneu;
+$ source /TL-Manager.sql;
+----
+
+== Administración Docker
+
+=== Comandos varios
+
+A continuación se encuentran comandos que pueden ser de ayuda para la administración:
+
+*Construir docker:*
+[source,bash]
+----
+$ docker-compose build
+----
+
+*Levantar docker:*
+[source,bash]
+----
+$ docker compose up
+----
+
+*Bajar docker:*
+[source,bash]
+----
+$ docker compose down
+----
+
+*Listar dockers:*
+[source,bash]
+----
+$ docker ps
+----
+
+*Entrar en la consola:*
+[source,bash]
+----
+$ docker exec -it tlm-neu-60-tomcat bash
+$ docker exec -it tlm-neu-60-mysql bash
+----
+
+*Eliminar network:*
+----
+$ docker network rm tlm-neu-60-tomcat_hfnet
+$ docker network rm tlm-neu-60-mysql_hfnet
+----
+
+*Conocer ip de docker:*
+[source,bash]
+----
+$ docker inspect <CONTAINER ID> |grep IPAddres
+----
+
+*Listar imagenes dockers:*
+[source,bash]
+----
+$ docker images -a
+----
+
+*Eliminar imagenes:*
+[source,bash]
+----
+$ docker rmi <REPOSITORY>
+----
+
+*Purgar dockers:*
+[source,bash]
+----
+$ docker system prune -a
+----
+
+*Listar volume:*
+[source,bash]
+----
+$ docker volume ls
+----
+
+*Purgar volume:*
+[source,bash]
+----
+$ docker volume prune -a
+----
+
+== Autor
+
+*Misael Fernández* - *Desarrollador Senior* - misael.fernandez.correa@gmail.com
+
+== Licencia
+
+Esta aplicación se distribuye con una licencia https://www.gnu.org/licenses/gpl.html[GPLv3].
