@@ -100,6 +100,56 @@ $ use tsl-noneu;
 $ source /TL-Manager.sql;
 ----
 
+=== Gestionar usuarios
+
+Se accede por consola a contenedor dockertlmanager-non-eu-tomcat.
+
+[source, bash]
+----
+$ docker ps  # para ver el nombre o ID del contenedor
+$ docker exec -it <CONTAINER ID> bash
+----
+
+Se modifica el archivo deployerConfigContext.xml
+
+[source, bash]
+----
+$ sudo vim webapps/cas-server-webapp-4.0.0/WEB-INF/deployerConfigContext.xml
+----
+
+Se busca esta sección y se agregan los usuarios
+
+[source, bash]
+----
+    <bean id="primaryAuthenticationHandler"
+          class="org.jasig.cas.authentication.AcceptUsersAuthenticationHandler">
+        <property name="users">
+            <map>
+                <entry key="test" value="password"/>
+                <entry key="USUARIO" value="CONTRASENIA"/>
+            </map>
+        </property>
+    </bean>
+----
+
+Se reinicia el contenedor
+
+[source, bash]
+----
+$ cd /opt/DockerTLManager-non-EU/
+$ docker-compose down
+$ ./iniciarTLManager.sh
+----
+
+Ingresando con el usuario test, se debe registrar los nuevos usuarios
+
+Finalmente, se repite el proceso para Gestionar Usuarios, comentando la siguiente entrada y luego reiniciando el contenedor:
+
+[source, bash]
+----
+                <!--<entry key="test" value="password"/>-->
+----
+
 == Administración Docker
 
 === Comandos varios
@@ -133,8 +183,7 @@ $ docker ps
 *Entrar en la consola:*
 [source,bash]
 ----
-$ docker exec -it tlm-neu-60-tomcat bash
-$ docker exec -it tlm-neu-60-mysql bash
+$ docker exec -it <CONTAINER ID> bash
 ----
 
 *Eliminar network:*
