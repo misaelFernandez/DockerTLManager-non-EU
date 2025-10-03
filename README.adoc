@@ -110,14 +110,14 @@ $ docker ps  # para ver el nombre o ID del contenedor
 $ docker exec -it <CONTAINER ID> bash
 ----
 
-Se modifica el archivo deployerConfigContext.xml
+Se modifica el archivo "deployerConfigContext.xml".
 
 [source, bash]
 ----
 $ sudo vim webapps/cas-server-webapp-4.0.0/WEB-INF/deployerConfigContext.xml
 ----
 
-Se busca esta sección y se agregan los usuarios
+Se busca esta sección y se agregan los usuarios.
 
 [source, bash]
 ----
