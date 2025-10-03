@@ -10,9 +10,16 @@ Conforme el manual de TL Manager non-EU en su versión 6.0, se utiliza lo siguie
 *Máquina virtual:* Amazon Corretto 1.8.0_462.b08-1
 *Base de Datos:* MySql 8.0.33
 
-Se toma en consideración https://gitlab.softwarelibre.gob.bo/-/snippets/15[Instalación de TL Manager non-EU v5.0], debido que contiene la información de los registros a ser insertados para trabajar con DRAFT.
-
 == Prerequisitos
+
+=== Herramientas a nivel de SO
+
+Instalación de herramientas
+
+[source, bash]
+----
+$ sudo dnf install -y unzip wget git
+----
 
 === Docker Engine
 
@@ -34,13 +41,32 @@ Instalación y configuración de https://github.com/docker/compose/releases[Dock
 ----
 $ sudo groupadd docker
 $ sudo usermod -aG docker ${USER}
-$ sudo curl -L "https://github.com/docker/compose/releases/download/v2.31.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+$ sudo curl -L "https://github.com/docker/compose/releases/download/v2.40.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 $ sudo chmod +x /usr/local/bin/docker-compose
 $ sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 $ docker-compose --version
 ----
 
+Iniciar y establecer como servicio
+
+[source,bash]
+----
+$ sudo systemctl start docker
+$ sudo systemctl enable docker
+----
+
 == Levantar TL Manager
+
+=== Descargar el proyecto
+
+Realizar los siguientes pasos:
+
+[source, bash]
+----
+$ cd /opt
+$ git clone https://github.com/misaelFernandez/DockerTLManager-non-EU.git
+$ cd DockerTLManager-non-EU/
+----
 
 === Iniciar con la configuración
 
